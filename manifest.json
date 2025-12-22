@@ -1,0 +1,15 @@
+{
+  "name": "ЛК менеджера",
+  "short_name": "ЛК",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23111827'/%3E%3Cpath d='M158 278c0-55 43-98 98-98s98 43 98 98v44c0 21-17 38-38 38H196c-21 0-38-17-38-38v-44z' fill='%2322c55e'/%3E%3Cpath d='M256 116a62 62 0 1 1 0 124 62 62 0 0 1 0-124z' fill='%23e5e7eb'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
