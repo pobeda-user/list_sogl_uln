@@ -451,9 +451,12 @@
         <div>Позиций: <b>${positionsCount}</b></div>
       `;
 
-      const table = document.createElement('table');
-      table.className = 'table';
-      table.innerHTML = `
+      // Определяем, какие столбцы нужны
+      const hasCluster = (req.positions || []).some(p => p.cluster && p.cluster.trim());
+      const hasRejected = (req.positions || []).some(p => p.status && p.status.trim() === 'Не согласовано');
+      
+      // Строим заголовок таблицы
+      let headerHtml = `
         <thead>
           <tr>
             <th>ЛК Ввод</th>
@@ -461,27 +464,52 @@
             <th>ЛК Вывод</th>
             <th>Наим. Вывод</th>
             <th>Склад</th>
-            <th>Кластер</th>
-            <th>Статус</th>
-            <th>Комментарий</th>
+      `;
+      
+      if (hasCluster) {
+        headerHtml += `<th>Кластер</th>`;
+      }
+      
+      headerHtml += `<th>Статус</th>`;
+      
+      if (hasRejected) {
+        headerHtml += `<th>Комментарий</th>`;
+      }
+      
+      headerHtml += `
           </tr>
         </thead>
         <tbody></tbody>
       `;
 
+      const table = document.createElement('table');
+      table.className = 'table';
+      table.innerHTML = headerHtml;
+
       const tbody = table.querySelector('tbody');
       for (const p of (req.positions || [])) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `
+        
+        let rowHtml = `
           <td>${escapeHtml_(p.lkInputCode || '')}</td>
           <td>${escapeHtml_(p.inputName || '')}</td>
           <td>${escapeHtml_(p.lkOutputCode || '')}</td>
           <td>${escapeHtml_(p.outputName || '')}</td>
           <td>${escapeHtml_(p.warehouseType || '')}</td>
-          <td>${escapeHtml_(p.cluster || '')}</td>
-          <td><span class="${badgeClass_(p.status)}">${escapeHtml_(p.status || '—')}</span></td>
-          <td>${escapeHtml_(p.approverComment || '')}</td>
         `;
+        
+        if (hasCluster) {
+          rowHtml += `<td>${escapeHtml_(p.cluster || '')}</td>`;
+        }
+        
+        rowHtml += `<td><span class="${badgeClass_(p.status)}">${escapeHtml_(p.status || '—')}</span></td>`;
+        
+        if (hasRejected) {
+          const comment = (p.status && p.status.trim() === 'Не согласовано') ? (p.approverComment || '') : '';
+          rowHtml += `<td>${escapeHtml_(comment)}</td>`;
+        }
+        
+        tr.innerHTML = rowHtml;
         tbody.appendChild(tr);
       }
 
