@@ -463,6 +463,7 @@
             <th>Склад</th>
             <th>Кластер</th>
             <th>Статус</th>
+            <th>Комментарий</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -479,6 +480,7 @@
           <td>${escapeHtml_(p.warehouseType || '')}</td>
           <td>${escapeHtml_(p.cluster || '')}</td>
           <td><span class="${badgeClass_(p.status)}">${escapeHtml_(p.status || '—')}</span></td>
+          <td>${escapeHtml_(p.approverComment || '')}</td>
         `;
         tbody.appendChild(tr);
       }
